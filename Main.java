@@ -1,15 +1,17 @@
 import java.io.BufferedWriter;
+import java.util.Objects;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args){
         String sessionLog = "launch_count.txt";
         String accounts = "List_of_acc.txt";
         int launchCount = 0;
-
+        //создание счётчика запусков
         try {
             File file = new File(sessionLog);
             if (file.exists()) {
@@ -25,6 +27,7 @@ public class Main {
 
         launchCount++;
 
+        //запись количества входов
         try {
             FileWriter writer = new FileWriter(sessionLog);
             writer.write(Integer.toString(launchCount));
@@ -33,6 +36,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        //считывание количества сессий
         try {
             File file = new File(sessionLog);
             if (file.exists()) {
@@ -46,6 +50,7 @@ public class Main {
             e.printStackTrace();
         }
 
+        //если это первая сессия создаём файл для хранения логина и пароля (в идиале)
         if (launchCount == 1){
             try {
                 File file = new File(accounts);
@@ -60,10 +65,11 @@ public class Main {
         }
 
         Scanner scanner = new Scanner(System.in);
-        AccountManager accountManager = new AccountManager();
 
+        //старт программы
+        int successStart = 0;
         System.out.println("Hello! Welcome to Amadi!");
-        while (true) {
+        while (successStart < 1) { //цикл, чтобы в случае ошибки вернуться к выбору
             System.out.println("Choose an option:");
             System.out.println("1. Create an account");
             System.out.println("2. Log in");
@@ -71,7 +77,7 @@ public class Main {
             System.out.println("4. Clear cache");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -80,31 +86,46 @@ public class Main {
                     System.out.print("Enter a password: ");
                     String password = scanner.nextLine();
                     User user = new User(username, password);
-                    accountManager.createAccount(user);
                     System.out.println("Account created successfully!");
 
+                    //запись пароля в файл для дальнейшего входа
                     try {
                         BufferedWriter writer = new BufferedWriter(new FileWriter(accounts));
-                        writer.write(username);
                         writer.write(password);
                         writer.close();
-                        System.out.println("Data has been saved.");
+                        System.out.println("Password has been saved.");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    break;
+                    successStart++; //чтобы после создания акка или входа не возвращаться в начало
+                    continue;
                 case 2:
-                    System.out.print("Enter your username: ");
-                    String loginUsername = scanner.nextLine();
-                    System.out.print("Enter your password: ");
-                    String loginPassword = scanner.nextLine();
+                    int access = 0;
+                    while (access < 1) {
+                        System.out.print("Enter a password: ");
+                        String usersPassword = scanner.nextLine();
 
-                    if (accountManager.login(loginUsername, loginPassword)) {
-                        System.out.println("Login successful!");
-                    } else {
-                        System.out.println("Login failed. Invalid username or password.");
+                        //чтение пароля из файла
+                        try {
+                            File pass = new File("filename.txt");
+                            Scanner checker = new Scanner(pass);
+                            while (checker.hasNextLine()) {
+                                String data = checker.nextLine();
+                                if (Objects.equals(data, usersPassword)) { //сравнение пароля из файла с введённым паролем
+                                    System.out.println("Access cleared");
+                                    access++;
+                                } else {
+                                    System.out.println("Access denied. Try again.");
+                                }
+                            }
+                            checker.close();
+                        } catch (FileNotFoundException e) {
+                            System.out.println("An error occurred.");
+                            e.printStackTrace();
+                        }
                     }
-                    break;
+                    successStart++;
+                    continue;
                 case 3:
                     System.out.println("Exiting the application.");
                     scanner.close();
@@ -124,6 +145,7 @@ public class Main {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

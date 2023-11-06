@@ -12,25 +12,31 @@ public class User {
         this.permissions = new HashSet<>();
     }
 
-    public void setUsername(String username){
-        this.username = username;
-    }
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
-    public void setPassword(String password) {
-        this.password = password;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
+
     public String getPassword() {
         return password;
     }
-    public void addPermission(String permission){
-        permissions.add(permission);
+
+    public void setPassword(String password) {
+        this.password = password;
     }
-    public void removePermission(String permission) {
-        permissions.remove(permission);
-    }
+
     public Set<String> getPermissions() {
         return permissions;
+    }
+
+    public void addPermission(String permission) {
+        permissions.add(permission);
+    }
+
+    public void removePermission(String permission) {
+        permissions.remove(permission);
     }
 }

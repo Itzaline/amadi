@@ -107,7 +107,7 @@ public class Main {
 
                         //чтение пароля из файла
                         try {
-                            File pass = new File("filename.txt");
+                            File pass = new File("List_of_acc.txt");
                             Scanner checker = new Scanner(pass);
                             while (checker.hasNextLine()) {
                                 String data = checker.nextLine();

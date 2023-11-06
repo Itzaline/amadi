@@ -4,11 +4,12 @@ public class Main {
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Hello! Welcome to Amadi!");
-        System.out.println("Choose what do you want to do.");
+        System.out.println("Choose what do you want to do:");
         System.out.println("1. Create account");
         System.out.println("2. Delete account");
         System.out.println("3. Exit");
         int chooseStart = scanner.nextInt();
+        scanner.nextLine();
         switch (chooseStart) {
             case 1:
                 System.out.print("Username: ");

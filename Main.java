@@ -74,55 +74,29 @@ public class Main {
             System.out.println("1. Create an account");
             System.out.println("2. Log in");
             System.out.println("3. Exit");
-            System.out.println("4. Clear cache");
+            System.out.println("4. Delete account");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
                 case 1:
-                    System.out.print("Enter a username: ");
+                    System.out.print("Enter the username: ");
                     String username = scanner.nextLine();
-                    System.out.print("Enter a password: ");
+                    System.out.print("Enter the password: ");
                     String password = scanner.nextLine();
                     User user = new User(username, password);
-                    System.out.println("Account created successfully!");
-
-                    //запись пароля в файл для дальнейшего входа
-                    try {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(accounts));
-                        writer.write(password);
-                        writer.close();
-                        System.out.println("Password has been saved.");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.println("The account successfully created!");
+                    user.createAccount(new File(accounts));
                     successStart++; //чтобы после создания акка или входа не возвращаться в начало
                     continue;
                 case 2:
-                    int access = 0;
-                    while (access < 1) {
-                        System.out.print("Enter a password: ");
-                        String usersPassword = scanner.nextLine();
-
-                        //чтение пароля из файла
-                        try {
-                            File pass = new File("List_of_acc.txt");
-                            Scanner checker = new Scanner(pass);
-                            while (checker.hasNextLine()) {
-                                String data = checker.nextLine();
-                                if (Objects.equals(data, usersPassword)) { //сравнение пароля из файла с введённым паролем
-                                    System.out.println("Access cleared");
-                                    access++;
-                                } else {
-                                    System.out.println("Access denied. Try again.");
-                                }
-                            }
-                            checker.close();
-                        } catch (FileNotFoundException e) {
-                            System.out.println("An error occurred.");
-                            e.printStackTrace();
-                        }
+                    user = new User(accounts);
+                    if (user.login()) {
+                        System.out.println("Доступ разрешен.");
+                        successStart++;
+                    } else {
+                        System.out.println("Доступ запрещен. Попробуйте снова.");
                     }
                     successStart++;
                     continue;
@@ -133,7 +107,7 @@ public class Main {
                     break;
                 case 4:
                     try {
-                        File file = new File(sessionLog);
+                        File file = new File(accounts);
                         if (file.exists()) {
                             FileWriter writer = new FileWriter(file);
                             writer.write("");

@@ -23,6 +23,7 @@ public class User {
             writer.write(username);
             writer.newLine(); // Добавляем новую строку для разделения записей
             writer.write(password);
+            writer.newLine();
             writer.close();
             System.out.println("Data has been saved.");
         } catch (IOException e) {
@@ -34,7 +35,7 @@ public class User {
         Scanner scanner = new Scanner(System.in);
         int access = 0;
         while (access < 1) {
-            System.out.print("Введите пароль: ");
+            System.out.print("Enter the password: ");
             String usersPassword = scanner.nextLine();
 
             try {
@@ -61,5 +62,20 @@ public class User {
         return false;
     }
 
+    public void deleteAccount(){
+        try {
+            File file = new File(accountsFile);
+            if (file.exists()) {
+                FileWriter writer = new FileWriter(file);
+                writer.write("");
+                writer.close();
+                System.out.println("Data in the file has been deleted.");
+            } else {
+                System.out.println("File not found. Nothing to delete.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

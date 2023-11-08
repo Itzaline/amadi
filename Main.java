@@ -16,10 +16,6 @@ public class Main {
             File file = new File(sessionLog);
             if (file.exists()) {
                 Scanner scanner = new Scanner(file);
-                if (scanner.hasNextInt()) {
-                    launchCount = scanner.nextInt();
-                }
-                scanner.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +46,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        //если это первая сессия создаём файл для хранения логина и пароля (в идиале)
+        //если это первая сессия создаём файл для хранения логина и пароля (в идеале)
         if (launchCount == 1){
             try {
                 File file = new File(accounts);
@@ -93,10 +89,10 @@ public class Main {
                 case 2:
                     user = new User(accounts);
                     if (user.login()) {
-                        System.out.println("Доступ разрешен.");
+                        System.out.println("Access is allowed.");
                         successStart++;
                     } else {
-                        System.out.println("Доступ запрещен. Попробуйте снова.");
+                        System.out.println("Access is denied. Try again.");
                     }
                     successStart++;
                     continue;
@@ -106,26 +102,56 @@ public class Main {
                     System.exit(0);
                     break;
                 case 4:
-                    try {
-                        File file = new File(accounts);
-                        if (file.exists()) {
-                            FileWriter writer = new FileWriter(file);
-                            writer.write("");
-                            writer.close();
-                            System.out.println("Data in the file has been deleted.");
-                        } else {
-                            System.out.println("File not found. Nothing to delete.");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.exit(0);
+                    user = new User(accounts);
+                    user.deleteAccount();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
 
-
+        //сама программа
+        int session = 0;
+        while (session < 1){
+            System.out.println("Select a option:");
+            System.out.println("1. Work with notes");
+            System.out.println("2. Work with task list");
+            int select = scanner.nextInt();
+            switch (select){
+                case 1:
+                    int workWithNotes = 0;
+                    while (workWithNotes < 1){
+                        System.out.println("Select a option:");
+                        System.out.println("1. Create note");
+                        System.out.println("2. Update note");
+                        System.out.println("3. Delete note");
+                        System.out.println("4. Show all notes");
+                        int selNote = scanner.nextInt();
+                        switch (selNote){
+                            case 1:
+                                NoteManager notes = new NoteManager();
+                                notes.create();
+                                workWithNotes++;
+                                continue;
+                            case 2:
+                                System.out.println("S");
+                                continue;
+                            case 3:
+                                notes = new NoteManager();
+                                notes.delete();
+                                workWithNotes++;
+                            default:
+                                System.out.println("Invalid value. Try again.");
+                                break;
+                        }
+                    }
+                    continue;
+                case 2:
+                default:
+                    System.out.println("Invalid value. Try again.");
+                    break;
+            }
+            session++;
+        }
     }
 }

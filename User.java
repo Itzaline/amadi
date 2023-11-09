@@ -1,9 +1,7 @@
 import java.io.*;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class User {
-    private String username;
     private String password;
     private String accountsFile;
 
@@ -12,18 +10,16 @@ public class User {
     }
 
     public User(String username, String password) {
-        this.username = username;
         this.password = password;
     }
 
     public void createAccount(File accounts) {
+        File file = new File(accounts + ".txt");
         //запись пароля в файл для дальнейшего входа
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(accounts, true)); // Добавляем данные к файлу
-            writer.write(username);
-            writer.newLine(); // Добавляем новую строку для разделения записей
+            // Добавляем данные к файлу
+            BufferedWriter writer = new BufferedWriter(new FileWriter(accounts, true));
             writer.write(password);
-            writer.newLine();
             writer.close();
             System.out.println("Data has been saved.");
         } catch (IOException e) {
@@ -31,51 +27,41 @@ public class User {
         }
     }
 
-    public boolean login(){
+    public void login(File accounts) {
         Scanner scanner = new Scanner(System.in);
-        int access = 0;
+        File login = new File(accounts.toURI());
+        int access =0;
         while (access < 1) {
-            System.out.print("Enter the password: ");
-            String usersPassword = scanner.nextLine();
-
-            try {
-                File pass = new File(accountsFile);
-                Scanner checker = new Scanner(pass);
-                boolean found = false;
-                while (checker.hasNextLine()) {
-                    String data = checker.nextLine();
-                    if (Objects.equals(data, usersPassword)) {
-                        found = true;
-                        break;
+            if (login.exists() && login.isFile()) {
+                System.out.print("Enter the password: ");
+                String password = scanner.nextLine();
+                try (BufferedReader reader = new BufferedReader(new FileReader(login))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (line.equals(password)) {
+                            System.out.println("Access is allowed.");
+                            access++;
+                        }  else {
+                            System.out.println("Access denied. Try again.");
+                        }
                     }
+                } catch (IOException e) {
+                    System.out.println("Error");
                 }
-                checker.close();
-                if (found) {
-                    return true;
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("Error.");
-                e.printStackTrace();
             }
-            System.out.println("Access denied. Try again.");
         }
-        return false;
     }
 
-    public void deleteAccount(){
-        try {
-            File file = new File(accountsFile);
-            if (file.exists()) {
-                FileWriter writer = new FileWriter(file);
-                writer.write("");
-                writer.close();
-                System.out.println("Data in the file has been deleted.");
+    public void deleteAccount() {
+        File file = new File(accountsFile);
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("Account has been deleted");
             } else {
-                System.out.println("File not found. Nothing to delete.");
+                System.out.println("Error");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            System.out.println("Account has not been founded");
         }
     }
-
 }

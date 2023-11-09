@@ -134,7 +134,9 @@ public class Main {
                                 workWithNotes++;
                                 continue;
                             case 2:
-                                System.out.println("S");
+                                notes = new NoteManager();
+                                notes.update();
+                                workWithNotes++;
                                 continue;
                             case 3:
                                 notes = new NoteManager();

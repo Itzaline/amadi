@@ -7,7 +7,7 @@ public class NoteManager implements RecordManager {
     @Override
     public void create() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of note:");
+        System.out.print("Enter the name of note:");
         String name = scanner.nextLine();
         //создание файла для записи
         try {
@@ -31,7 +31,7 @@ public class NoteManager implements RecordManager {
     @Override
     public void update() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of note:");
+        System.out.print("Enter the name of note:");
         String name = scanner.nextLine();
         try {
             //открытие файла в блокноте
@@ -45,7 +45,7 @@ public class NoteManager implements RecordManager {
     @Override
     public void delete() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the name of the note: ");
+        System.out.print("Enter the name of the note: ");
         String name = scanner.nextLine();
         File file = new File(name);
         if (file.exists()) {
@@ -61,6 +61,16 @@ public class NoteManager implements RecordManager {
 
     @Override
     public void showAll() {
+        File currentDirectory = new File(".");
+        File[] files = currentDirectory.listFiles();
 
+        if (files != null) {
+            System.out.println("All notes:");
+            for (File file : files) {
+                if (file.isFile() && file.getName().endsWith(".txt")) {
+                    System.out.println(file.getName());
+                }
+            }
+        }
     }
 }

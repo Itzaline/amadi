@@ -77,6 +77,7 @@ public class Main {
                         System.out.println("2. Update note");
                         System.out.println("3. Delete note");
                         System.out.println("4. Show all notes");
+                        System.out.println("5. Exit");
                         int selNote = scanner.nextInt();
                         switch (selNote){
                             case 1:
@@ -90,6 +91,15 @@ public class Main {
                             case 3:
                                 notes = new NoteManager();
                                 notes.delete();
+                            case 4:
+                                notes = new NoteManager();
+                                notes.showAll();
+                                continue;
+                            case 5:
+                                System.out.println("Exiting the application.");
+                                scanner.close();
+                                System.exit(0);
+                                break;
                             default:
                                 System.out.println("Invalid value. Try again.");
                                 break;
@@ -98,15 +108,44 @@ public class Main {
                     continue;
                 case 2:
                     int workWithTaskList = 0;
-                    while (workWithTaskList<0){
+                    while (workWithTaskList < 0){
                         System.out.println("Select a option:");
                         System.out.println("1. Create task list");
                         System.out.println("2. Update task list");
                         System.out.println("3. Delete task list");
                         System.out.println("4. Show all task list");
+                        System.out.println("5. The list of tasks has been cleared");
+                        System.out.println("6. Exit");
                         int selTask = scanner.nextInt();
                         switch (selTask){
                             case 1:
+                                TaskListManager tasks = new TaskListManager();
+                                tasks.create();
+                                continue;
+                            case 2:
+                                tasks = new TaskListManager();
+                                tasks.update();
+                                continue;
+                            case 3:
+                                tasks = new TaskListManager();
+                                tasks.delete();
+                                continue;
+                            case 4:
+                                tasks = new TaskListManager();
+                                tasks.showAll();
+                                continue;
+                            case 5:
+                                tasks = new TaskListManager();
+                                tasks.isCopmleted();
+                                continue;
+                            case 6:
+                                System.out.println("Exiting the application.");
+                                scanner.close();
+                                System.exit(0);
+                                break;
+                            default:
+                                System.out.println("Invalid value. Try again.");
+                                break;
                         }
                     }
                     continue;

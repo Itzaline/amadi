@@ -30,7 +30,7 @@ public class TaskListManager implements RecordManager {
     @Override
     public void update() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the name of note:");
+        System.out.print("Enter the name of note: ");
         String name = scanner.nextLine();
         try {
             //открытие файла в блокноте
@@ -75,7 +75,7 @@ public class TaskListManager implements RecordManager {
 
     public void isCompleted(){
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter the name of the completed task list: ");
+        System.out.print("Enter the name of the completed task list (with .txt): ");
         String name = scanner.nextLine();
         File file = new File(name);
         if (file.exists()) {

@@ -108,7 +108,7 @@ public class Main {
                     continue;
                 case 2:
                     int workWithTaskList = 0;
-                    while (workWithTaskList < 0){
+                    while (workWithTaskList < 1){
                         System.out.println("Select a option:");
                         System.out.println("1. Create task list");
                         System.out.println("2. Update task list");
@@ -136,7 +136,7 @@ public class Main {
                                 continue;
                             case 5:
                                 tasks = new TaskListManager();
-                                tasks.isCopmleted();
+                                tasks.isCompleted();
                                 continue;
                             case 6:
                                 System.out.println("Exiting the application.");
